@@ -20,9 +20,13 @@ def user_input() -> bool:
     if len(sys.argv) != 2:
         raise InputError("Incorrect number of arguments")
     if sys.argv[0].endswith("a_maze_ing.py") is False:
-        raise InputError("Program name is not correct. Needs to be 'a_maze_ing.py")
+        raise InputError(
+            "Program name is not correct. Needs to be 'a_maze_ing.py"
+        )
     if sys.argv[1] != "config.txt":
-        raise InputError("Config file name is incorrect. It needs to be config.txt")
+        raise InputError(
+            "Config file name is incorrect. It needs to be config.txt"
+        )
     return True
 
 
@@ -42,8 +46,12 @@ def convert_dict_values(dict_to_format: dict) -> dict:
     try:
         dict_to_format["WIDTH"] = int(dict_to_format["WIDTH"])
         dict_to_format["HEIGHT"] = int(dict_to_format["HEIGHT"])
-        dict_to_format["ENTRY"] = tuple(map(int, dict_to_format["ENTRY"].split(",")))
-        dict_to_format["EXIT"] = tuple(map(int, dict_to_format["EXIT"].split(",")))
+        dict_to_format["ENTRY"] = tuple(
+            map(int, dict_to_format["ENTRY"].split(","))
+        )
+        dict_to_format["EXIT"] = tuple(
+            map(int, dict_to_format["EXIT"].split(","))
+        )
         if dict_to_format["PERFECT"] == "True":
             dict_to_format["PERFECT"] = True
         else:

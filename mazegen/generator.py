@@ -29,7 +29,8 @@ class MazeGenerator:
         self._perfect: bool = config["PERFECT"]
         self._seed: int | None = config["SEED"]
         self._maze: List[list[Cell]] = [
-            [Cell(x, y) for x in range(self._width)] for y in range(self._height)
+            [Cell(x, y) for x in range(self._width)]
+            for y in range(self._height)
         ]
         self._path: str = ""
         self._structure: str = ""
@@ -172,7 +173,9 @@ class MazeGenerator:
             return False
         return True
 
-    def _get_unvisited_neighbors(self, neighbors: list["Cell"]) -> list["Cell"]:
+    def _get_unvisited_neighbors(
+        self, neighbors: list["Cell"]
+    ) -> list["Cell"]:
         """Takes a list of cell objects and sees which ones are unvisited"""
         unvisited = []
         for neighbor in neighbors:
@@ -265,7 +268,9 @@ class MazeGenerator:
             current = queue.pop(0)
             neighbors = self._get_neighbors(current)
             for neighbor in neighbors:
-                if neighbor not in visited and self._allowed_entry(current, neighbor):
+                if neighbor not in visited and self._allowed_entry(
+                    current, neighbor
+                ):
                     came_from[neighbor] = current
                     queue.append(neighbor)
                     visited.append(neighbor)
@@ -376,7 +381,9 @@ class MazeGenerator:
         for x, y in neighbors:
             neighbor = self._get_cell((node.x + x), (node.y + y))
             if neighbor is not None:
-                node_neighbors.append(self._get_cell((node.x + x), (node.y + y)))
+                node_neighbors.append(
+                    self._get_cell((node.x + x), (node.y + y))
+                )
         return node_neighbors
 
     def _remove_walls(self, current: "Cell", chosen: "Cell") -> None:

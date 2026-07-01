@@ -3,8 +3,7 @@
 from parsing.parsing import parsed_input_dict, check_parameters
 from parsing.parsing_errors import InputError, ConfigError, FileError
 from visuals.display_maze import display_maze
-from visuals.display_classes import DisplayError
-from mazegen import MazeGenerator, ConfigDict
+from mazegen import MazeGenerator
 from mazegen.error import GenerationError
 
 

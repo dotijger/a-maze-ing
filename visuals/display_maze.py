@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-from visuals.display_classes import DisplayError, MapError, MlxError
-from parsing.parsing_errors import FileError
+from visuals.display_classes import MapError, MlxError
+from parsing.parsing_errors import FileError, ConfigError
 from visuals.display_classes import TileInfo, Window, Image, MazeInfo
 from visuals.drawing import draw_maze, draw_solution
 from mlx import Mlx
 from typing import Any
 from mazegen import MazeGenerator, ConfigDict
+from mazegen.error import GenerationError
 
 
 def display_maze(configs: ConfigDict) -> None:
@@ -85,7 +86,6 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     mlx: Mlx
     mlx_ptr: Any
     window: Window
-    map: list[list[int]]
     entry: tuple
     exit: tuple
     draw_data: MazeInfo
@@ -159,7 +159,9 @@ def mlx_display(
     try:
         mlx_ptr = mlx.mlx_init()
     except Exception as msg:
-        raise MlxError(f"mlx could not initialise with error message {str(msg)}")
+        raise MlxError(
+            f"mlx could not initialise with error message {str(msg)}"
+        )
     tile: TileInfo = TileInfo(maze)
     window: Window = Window(tile, mlx, mlx_ptr)
     image: Image = Image(mlx, mlx_ptr)
@@ -171,7 +173,9 @@ def mlx_display(
     try:
         create_info_window(mlx, mlx_ptr)
     except Exception as msg:
-        raise MlxError(f"Could not create info window with error message {str(msg)}")
+        raise MlxError(
+            f"Could not create info window with error message {str(msg)}"
+        )
     draw_maze(draw_data, mlx, mlx_ptr)
     try:
         mlx.mlx_hook(
@@ -179,14 +183,28 @@ def mlx_display(
             2,
             1,
             on_key_press,
-            ((mlx, mlx_ptr, window, entry_coord, exit_coord, draw_data, configs)),
+            (
+                (
+                    mlx,
+                    mlx_ptr,
+                    window,
+                    entry_coord,
+                    exit_coord,
+                    draw_data,
+                    configs,
+                )
+            ),
         )
     except Exception as msg:
         raise MlxError(f"Issue with key press hook with error message {msg}")
     try:
-        mlx.mlx_hook(window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr), None)
+        mlx.mlx_hook(
+            window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr), None
+        )
     except Exception as msg:
-        raise MlxError(f"Issue with window exit hook with error message {str(msg)}")
+        raise MlxError(
+            f"Issue with window exit hook with error message {str(msg)}"
+        )
     mlx.mlx_loop(mlx_ptr)
 
 
@@ -201,7 +219,12 @@ def create_info_window(mlx: Mlx, mlx_ptr: Any) -> None:
     window_ptr = mlx.mlx_new_window(mlx_ptr, 600, 600, "Instructions")
     mlx.mlx_string_put(mlx_ptr, window_ptr, 10, 10, 0xFF00FF, "Instructions")
     mlx.mlx_string_put(
-        mlx_ptr, window_ptr, 10, 60, 0xFF00FF, "Press these keys to do the thing:"
+        mlx_ptr,
+        window_ptr,
+        10,
+        60,
+        0xFF00FF,
+        "Press these keys to do the thing:",
     )
     mlx.mlx_string_put(
         mlx_ptr,
@@ -228,7 +251,12 @@ def create_info_window(mlx: Mlx, mlx_ptr: Any) -> None:
         "3.  c     = Changes the theme of the maze",
     )
     mlx.mlx_string_put(
-        mlx_ptr, window_ptr, 10, 160, 0xFF00FF, "4.  r     = Regenerates the same maze"
+        mlx_ptr,
+        window_ptr,
+        10,
+        160,
+        0xFF00FF,
+        "4.  r     = Regenerates the same maze",
     )
     mlx.mlx_string_put(
         mlx_ptr,
@@ -239,5 +267,9 @@ def create_info_window(mlx: Mlx, mlx_ptr: Any) -> None:
         "5.  d     = Generates DPS maze (Default maze)",
     )
     mlx.mlx_hook(
-        window_ptr, 33, 0, lambda any: mlx.mlx_destroy_window(mlx_ptr, window_ptr), None
+        window_ptr,
+        33,
+        0,
+        lambda any: mlx.mlx_destroy_window(mlx_ptr, window_ptr),
+        None,
     )

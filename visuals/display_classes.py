@@ -105,7 +105,9 @@ class Window:
         """
         self.width = tile.cols * tile.passage + tile.wall
         self.height = tile.rows * tile.passage + tile.wall
-        self.ptr = mlx.mlx_new_window(mlx_ptr, self.width, self.height, "A-maze-ing")
+        self.ptr = mlx.mlx_new_window(
+            mlx_ptr, self.width, self.height, "A-maze-ing"
+        )
 
 
 class Image:
@@ -130,11 +132,21 @@ class Image:
         self.end_ptr, self.end_width, self.end_height = end
         if not self.end_ptr:
             print("Failed to load end image!")
-        alt_walls = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/files/alt_wall.png")
-        self.alt_wall_ptr, self.alt_walls_width, self.alt_walls_height = alt_walls
-        alt_start = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/files/alt_start.png")
-        self.alt_start_ptr, self.alt_start_width, self.alt_start_height = alt_start
-        alt_end = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/files/alt_end.png")
+        alt_walls = mlx.mlx_png_file_to_image(
+            mlx_ptr, "./visuals/files/alt_wall.png"
+        )
+        self.alt_wall_ptr, self.alt_walls_width, self.alt_walls_height = (
+            alt_walls
+        )
+        alt_start = mlx.mlx_png_file_to_image(
+            mlx_ptr, "./visuals/files/alt_start.png"
+        )
+        self.alt_start_ptr, self.alt_start_width, self.alt_start_height = (
+            alt_start
+        )
+        alt_end = mlx.mlx_png_file_to_image(
+            mlx_ptr, "./visuals/files/alt_end.png"
+        )
         self.alt_end_ptr, self.alt_end_width, self.alt_end_height = alt_end
         steps = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/files/steps.png")
         self.steps_ptr, self.steps_width, self.steps_height = steps

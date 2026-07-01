@@ -40,8 +40,8 @@ bonfire:
 
 lint:
 	flake8
-	python3 -m mypy . $(MYPY_FLAGS)
+	mypy . $(MYPY_FLAGS)
 
 lint-strict:
 	flake8
-	$(PYTHON) -m mypy . --strict
+	mypy . --strict

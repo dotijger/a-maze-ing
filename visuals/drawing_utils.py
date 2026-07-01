@@ -105,11 +105,15 @@ def draw_internal_walls(data: DrawingData):
 
             # Horizontal segment across the top of the cell interior
             if has_north_wall(cell_value):
-                fill_wall(data, col_x + data.wall, row_y, data.inner, data.wall)
+                fill_wall(
+                    data, col_x + data.wall, row_y, data.inner, data.wall
+                )
 
             # Vertical segment down the left of the cell interior
             if has_west_wall(cell_value):
-                fill_wall(data, col_x, row_y + data.wall, data.wall, data.inner)
+                fill_wall(
+                    data, col_x, row_y + data.wall, data.wall, data.inner
+                )
 
 
 def draw_entry(data: DrawingData, drawing: MazeInfo):
