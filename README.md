@@ -2,6 +2,8 @@
 
 # a_maze_ing
 
+![Screenshot][visuals/files/maze_screenshot.png]
+
 ## Description
 
 a_maze_ing is a maze generator project for the 42 core curriculum. It is a python written program that allows you to generate a maze and its shortest path solution. The maze is visualized with the MiniLibX library. The maze generator will allow you to set entry and exit points, as well as whether you would like a perfect or imperfect maze generated. You can also regenerate or reproduce the same maze by the use of a seed.

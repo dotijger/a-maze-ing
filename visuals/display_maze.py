@@ -6,8 +6,7 @@ from visuals.display_classes import TileInfo, Window, Image, MazeInfo
 from visuals.drawing import draw_maze, draw_solution
 from mlx import Mlx
 from typing import Any
-from mazegen.mazegen import MazeGenerator
-from mazegen.mazegen import ConfigDict
+from mazegen import MazeGenerator, ConfigDict
 
 
 def display_maze(configs: ConfigDict) -> None:
