@@ -28,7 +28,7 @@ def main() -> None:
     try:
         config_dict = parsed_input_dict()
         check_parameters(config_dict)
-    except (InputError, ConfigError, FileError) as msg:
+    except (InputError, ConfigError, FileError, ValueError, KeyError) as msg:
         print(msg)
         return
 
@@ -38,7 +38,7 @@ def main() -> None:
         generator.generate()
         generator.solve()
         generator.output()
-    except (ConfigError, GenerationError) as msg:
+    except (ConfigError, GenerationError, ValueError) as msg:
         print(msg)
         return
 

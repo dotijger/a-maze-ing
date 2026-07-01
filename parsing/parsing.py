@@ -37,6 +37,10 @@ def check_complete(raw: dict[str, str]) -> None:
         if key not in raw:
             raise ConfigError(f"Missing required key: {key}")
 
+    for key in required:
+        if raw[key] == "":
+            raise ConfigError(f"Missing required value for {key}")
+
 
 def convert_dict_values(dict_to_format: dict[str, str]) -> ConfigDict:
     """Converts the string values in the dictionary into the value type it
@@ -66,16 +70,27 @@ def convert_dict_values(dict_to_format: dict[str, str]) -> ConfigDict:
         formatted_dict["OUTPUT_FILE"] = dict_to_format["OUTPUT_FILE"]
         formatted_dict["WIDTH"] = int(dict_to_format["WIDTH"])
         formatted_dict["HEIGHT"] = int(dict_to_format["HEIGHT"])
-        x, y = tuple(map(int, dict_to_format["ENTRY"].split(",")))
-        formatted_dict["ENTRY"] = (x, y)
-        x, y = tuple(map(int, dict_to_format["EXIT"].split(",")))
-        formatted_dict["EXIT"] = (x, y)
+        try:
+            x1, y1 = tuple(map(int, dict_to_format["ENTRY"].split(",")))
+            x2, y2 = tuple(map(int, dict_to_format["EXIT"].split(",")))
+        except ValueError:
+            raise ValueError("Coordinates are incomplete")
+        formatted_dict["ENTRY"] = (x1, y1)
+        formatted_dict["EXIT"] = (x2, y2)
         if dict_to_format["PERFECT"] == "True":
             formatted_dict["PERFECT"] = True
-        else:
+        elif dict_to_format["PERFECT"] == "False":
             formatted_dict["PERFECT"] = False
+        else:
+            raise ConfigError("PERFECT needs either 'True' or 'False'")
         if dict_to_format["SEED"]:
-            formatted_dict["SEED"] = int(dict_to_format["SEED"])
+            try:
+                seed = int(dict_to_format["SEED"])
+            except ValueError:
+                raise ValueError(
+                    "Invalid seed specified, only int values allowed"
+                )
+            formatted_dict["SEED"] = seed
         else:
             formatted_dict["SEED"] = None
     except KeyError:
