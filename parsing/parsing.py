@@ -31,6 +31,14 @@ def user_input() -> bool:
     return True
 
 
+def check_complete(raw: dict[str, str]) -> None:
+    required = ["WIDTH", "HEIGHT", "EXIT", "ENTRY", "OUTPUT_FILE", "PERFECT"]
+
+    for key in required:
+        if key not in raw:
+            raise ConfigError(f"Missing required key: {key}")
+
+
 def convert_dict_values(dict_to_format: dict[str, str]) -> ConfigDict:
     """Converts the string values in the dictionary into the value type it
     needs to be in order to be used.
@@ -54,6 +62,7 @@ def convert_dict_values(dict_to_format: dict[str, str]) -> ConfigDict:
         "SEED": None,
     }
 
+    check_complete(dict_to_format)
     try:
         formatted_dict["OUTPUT_FILE"] = dict_to_format["OUTPUT_FILE"]
         formatted_dict["WIDTH"] = int(dict_to_format["WIDTH"])
@@ -130,60 +139,11 @@ def check_parameters(config_dict: ConfigDict) -> None:
     Returns:
         None
     """
-    entry_x: int
-    entry_y: int
-    exit_x: int
-    exit_y: int
-    width: int
-    height: int
+    entry_x, entry_y = config_dict["ENTRY"]
+    exit_x, exit_y = config_dict["EXIT"]
+    width = config_dict["WIDTH"]
+    height = config_dict["HEIGHT"]
 
-    def get_and_check_tuple(key: str) -> tuple[int, int]:
-        """Gets the dictionary tuple value and checks the value is None
-
-        Args:
-            key (str): The dictionary key to get the value for
-
-        Raises:
-            ConfigError(tuple-key): could not find the key in the dictionary
-            for exit or entry coordinates
-
-        Returns:
-            Tuple: The dictionary value for the given key
-        """
-        result_x: int
-        result_y: int
-        result: object
-
-        result = config_dict.get(key)
-        if result is None:
-            raise ConfigError(f"Could not find {key} in the config_dict")
-        result_x, result_y = result
-        return (result_x, result_y)
-
-    def get_and_check_int(key: str) -> int:
-        """Gets the dictionary int value and checks the value is None
-
-        Args:
-            key (str): The dictionary key to get the value for
-
-        Raises:
-            ConfigError(int-key): could not find the key in the dictionary for
-        the width or height
-
-        Returns:
-            int: The dictionary value for the given key
-        """
-        result_int: object
-
-        result_int = config_dict.get(key)
-        if result_int is None:
-            raise ConfigError(f"Could not find {key} in config_dict")
-        return int(result_int)
-
-    entry_x, entry_y = get_and_check_tuple("ENTRY")
-    exit_x, exit_y = get_and_check_tuple("EXIT")
-    width = get_and_check_int("WIDTH")
-    height = get_and_check_int("HEIGHT")
     if entry_x < 0 or entry_x > width:
         raise ConfigError("Entry x-coordinate out of bounds")
     if entry_y < 0 or entry_y > height:
