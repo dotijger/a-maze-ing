@@ -3,6 +3,7 @@
 import sys
 from .parsing_errors import InputError, ConfigError
 from typing import Tuple
+from mazegen import ConfigDict
 
 
 def user_input() -> bool:
@@ -30,7 +31,7 @@ def user_input() -> bool:
     return True
 
 
-def convert_dict_values(dict_to_format: dict) -> dict:
+def convert_dict_values(dict_to_format: dict) -> ConfigDict:
     """Converts the string values in the dictionary into the value type it
     needs to be in order to be used.
 
@@ -65,7 +66,7 @@ def convert_dict_values(dict_to_format: dict) -> dict:
     return dict_to_format
 
 
-def config_file() -> dict:
+def config_file() -> ConfigDict:
     """Reads the config file and puts all the key-value pairs into a
     dictionary. It then calls a function to convert the values into
     their correct type, then finally returns the formatted dictionary
@@ -86,7 +87,7 @@ def config_file() -> dict:
     return config_info
 
 
-def parsed_input_dict() -> dict:
+def parsed_input_dict() -> ConfigDict:
     """It calls the input and config parser then returns the dictionary.
 
     Raises:
@@ -97,14 +98,14 @@ def parsed_input_dict() -> dict:
         dict: a dictionary containing the config information for the
         maze generator
     """
-    config_dict: dict
+    config_dict: ConfigDict
 
     user_input()
     config_dict = config_file()
     return config_dict
 
 
-def check_parameters(config_dict: dict) -> None:
+def check_parameters(config_dict: ConfigDict) -> None:
     """Checks the entry and exit coordinates are within the map bounds as well
     as the entry and exit coordinates are not the same
 

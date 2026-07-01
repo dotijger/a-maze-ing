@@ -3,7 +3,7 @@
 from parsing.parsing import parsed_input_dict, check_parameters
 from parsing.parsing_errors import InputError, ConfigError, FileError
 from visuals.display_maze import display_maze
-from mazegen import MazeGenerator
+from mazegen import MazeGenerator, ConfigDict
 from mazegen.error import GenerationError
 
 
@@ -22,7 +22,7 @@ def main() -> None:
         Solver:
     """
     # Variables ***************************************************************
-    config_dict = {}
+    config_dict: ConfigDict
 
     # Parsing *****************************************************************
     try:
