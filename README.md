@@ -1,20 +1,17 @@
 *This project has been created as part of the 42 curriculum by odschreu, lelouren*
 
-# Description
+# a_maze_ing
 
-## Brief overview
+## Description
 
-We implemented a maze generator in Python that takes a configuration file, generates a
-maze, eventually perfect (with a single path between entrance and exit), and writes it to a
-file using a hexadecimal wall representation. We also provided a visual representation
-of the maze and organized our code so that the generation logic can be reused later.
+a_maze_ing is a maze generator project for the 42 core curriculum. It is a python written program that allows you to generate a maze and its shortest path solution. The maze is visualized with the MiniLibX library. The maze generator will allow you to set entry and exit points, as well as whether you would like a perfect or imperfect maze generated. You can also regenerate or reproduce the same maze by the use of a seed.
 
 ## Goals of this project
 
 [ ] Create a maze generator from a config file  
 [ ] Generate a perfect maze  
 [ ] Output the maze as a hexadecimal representation  
-[ ] Create a visual representation of the maze  
+[ ] Create a visual representation of the maze and its shortest path solution  
 [ ] Ensure it is appropriately packaged for reusing later  
 
 # Instructions
@@ -92,4 +89,3 @@ Claude:
 - Breaking down project requirements into daily tasks
 - Explaining concepts such as ctypes and algorithms
 - Formatting
-
