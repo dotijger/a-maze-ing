@@ -73,7 +73,7 @@ def draw_top_border(data: DrawingData) -> None:
     fill_wall(data, data.cols * data.passage, top_y, data.wall, data.wall)
 
 
-def draw_left_border(data: DrawingData):
+def draw_left_border(data: DrawingData) -> None:
     """Draws the left border of the maze.
 
     Args:
@@ -88,7 +88,7 @@ def draw_left_border(data: DrawingData):
     fill_wall(data, left_x, data.rows * data.passage, data.wall, data.wall)
 
 
-def draw_internal_walls(data: DrawingData):
+def draw_internal_walls(data: DrawingData) -> None:
     """Draws the internal walls of the maze.
 
     Args:
@@ -116,7 +116,7 @@ def draw_internal_walls(data: DrawingData):
                 )
 
 
-def draw_entry(data: DrawingData, drawing: MazeInfo):
+def draw_entry(data: DrawingData, drawing: MazeInfo) -> None:
     """Draws the entrance to the maze.
 
     Args:
@@ -206,7 +206,10 @@ def draw_exit(data: DrawingData, drawing: MazeInfo) -> None:
 
 
 def draw_steps(
-    data: DrawingData, coordinates: tuple, next_step: str, entry: tuple
+    data: DrawingData,
+    coordinates: tuple[int, int],
+    next_step: str,
+    entry: tuple[int, int],
 ) -> None:
     """Draws the current step in the solution string
 

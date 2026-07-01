@@ -12,9 +12,10 @@ from visuals.drawing_utils import (
     draw_steps,
 )
 from mlx import Mlx
+from typing import Any
 
 
-def draw_maze(drawing: MazeInfo, mlx: Mlx, mlx_ptr) -> None:
+def draw_maze(drawing: MazeInfo, mlx: Mlx, mlx_ptr: Any) -> None:
     """Orchestrates the drawing of the maze
 
     Args:
@@ -33,7 +34,13 @@ def draw_maze(drawing: MazeInfo, mlx: Mlx, mlx_ptr) -> None:
     draw_exit(data, drawing)
 
 
-def draw_solution(drawing: MazeInfo, mlx, mlx_ptr, entry, exit) -> None:
+def draw_solution(
+    drawing: MazeInfo,
+    mlx: Mlx,
+    mlx_ptr: Any,
+    entry: tuple[int, int],
+    exit: tuple[int, int],
+) -> None:
     """Draws the solution path
 
     Args:

@@ -2,7 +2,6 @@
 
 import sys
 from .parsing_errors import InputError, ConfigError
-from typing import Any
 from mazegen import ConfigDict
 
 

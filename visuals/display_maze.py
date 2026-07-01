@@ -5,9 +5,26 @@ from parsing.parsing_errors import FileError, ConfigError
 from visuals.display_classes import TileInfo, Window, Image, MazeInfo
 from visuals.drawing import draw_maze, draw_solution
 from mlx import Mlx
-from typing import Any
+from typing import Any, NamedTuple
 from mazegen import MazeGenerator, ConfigDict
 from mazegen.error import GenerationError
+
+
+class HexMap(NamedTuple):
+    int_map: list[list[int]]
+    entry: tuple[int, int]
+    exit: tuple[int, int]
+    path: str
+
+
+class HookData(NamedTuple):
+    mlx: Mlx
+    mlx_ptr: Any
+    window: Window
+    entry: tuple[int, int]
+    exit: tuple[int, int]
+    draw_data: MazeInfo
+    configs: ConfigDict
 
 
 def display_maze(configs: ConfigDict) -> None:
@@ -26,16 +43,16 @@ def display_maze(configs: ConfigDict) -> None:
     maze: list[list[int]] = []
     path: str = ""
 
-    maze, entry_coord, exit_coord, path = read_hex_map()
+    maze, entry_coord, exit_coord, path = read_hex_map(configs)
     if len(maze[0]) != configs["WIDTH"]:
         raise MapError("Maze width does not equal config width")
     if len(maze) != configs["HEIGHT"]:
         raise MapError("Maze height does not equal config height")
-    is_perfect: bool = configs.get("PERFECT")
+    is_perfect: bool = configs["PERFECT"]
     mlx_display(maze, entry_coord, exit_coord, path, is_perfect, configs)
 
 
-def read_hex_map() -> tuple:
+def read_hex_map(configs: ConfigDict) -> HexMap:
     """Reads the output.txt for information to create the map and the path
 
     Returns:
@@ -50,8 +67,7 @@ def read_hex_map() -> tuple:
 
     int_map: list[list[int]] = []
     row: list[int] = []
-    # output_file: str = "tests/output_file.txt"
-    output_file: str = "output_file.txt"
+    output_file: str = configs["OUTPUT_FILE"]
     path: str = ""
     entry: tuple[int, int]
     exit: tuple[int, int]
@@ -68,10 +84,10 @@ def read_hex_map() -> tuple:
             path = maze_file.readline().strip()
     except Exception as msg:
         raise FileError(str(msg))
-    return (int_map, entry, exit, path)
+    return HexMap(int_map, entry, exit, path)
 
 
-def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
+def on_key_press(key_pressed: int, mlx_data: HookData) -> None:
     """When a key is pressed, it will run the process connected to that key.
     Esc (65307) = Exits the program when you press escape
     s   (115)   = Shows or hides the solution path
@@ -86,8 +102,8 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     mlx: Mlx
     mlx_ptr: Any
     window: Window
-    entry: tuple
-    exit: tuple
+    entry: tuple[int, int]
+    exit: tuple[int, int]
     draw_data: MazeInfo
     generate_dfs: MazeGenerator
     configs: ConfigDict
@@ -102,7 +118,7 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
         except (ConfigError, GenerationError) as msg:
             print(msg)
             return
-        new_maze, new_entry, new_exit, new_path = read_hex_map()
+        new_maze, new_entry, new_exit, new_path = read_hex_map(configs)
         draw_data.maze = new_maze
         draw_data.entry_coord = new_entry
         draw_data.exit_coord = new_exit
@@ -141,8 +157,8 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
 
 def mlx_display(
     maze: list[list[int]],
-    entry_coord: tuple,
-    exit_coord: tuple,
+    entry_coord: tuple[int, int],
+    exit_coord: tuple[int, int],
     path: str,
     is_perfect: bool,
     configs: ConfigDict,
@@ -183,16 +199,14 @@ def mlx_display(
             2,
             1,
             on_key_press,
-            (
-                (
-                    mlx,
-                    mlx_ptr,
-                    window,
-                    entry_coord,
-                    exit_coord,
-                    draw_data,
-                    configs,
-                )
+            HookData(
+                mlx,
+                mlx_ptr,
+                window,
+                entry_coord,
+                exit_coord,
+                draw_data,
+                configs,
             ),
         )
     except Exception as msg:

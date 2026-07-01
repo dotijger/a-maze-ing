@@ -20,7 +20,7 @@ class DisplayError(Exception):
         Exception (_type_)
     """
 
-    def __init__(self, msg) -> None:
+    def __init__(self, msg: str) -> None:
         """Shows errors related to displaying the maze.
 
         Args:
@@ -163,8 +163,8 @@ class MazeInfo:
         tile: TileInfo,
         window: Window,
         image: Image,
-        entry_coord: tuple,
-        exit_coord: tuple,
+        entry_coord: tuple[int, int],
+        exit_coord: tuple[int, int],
         path: str,
         is_perfect: bool,
     ) -> None:
