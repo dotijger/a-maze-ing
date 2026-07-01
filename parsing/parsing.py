@@ -18,7 +18,7 @@ def user_input() -> bool:
         bool: True if no errors are raised
     """
     if len(sys.argv) != 2:
-        raise InputError("Incorrect number of arguments")
+        raise InputError("Incorrect number of arguments, expected 2")
     if sys.argv[0].endswith("a_maze_ing.py") is False:
         raise InputError(
             "Program name is not correct. Needs to be 'a_maze_ing.py"
@@ -68,13 +68,18 @@ def convert_dict_values(dict_to_format: dict[str, str]) -> ConfigDict:
     check_complete(dict_to_format)
     try:
         formatted_dict["OUTPUT_FILE"] = dict_to_format["OUTPUT_FILE"]
-        formatted_dict["WIDTH"] = int(dict_to_format["WIDTH"])
-        formatted_dict["HEIGHT"] = int(dict_to_format["HEIGHT"])
+        try:
+            formatted_dict["WIDTH"] = int(dict_to_format["WIDTH"])
+            formatted_dict["HEIGHT"] = int(dict_to_format["HEIGHT"])
+        except ValueError:
+            raise ValueError("WIDTH and HEIGHT have to be integer values")
         try:
             x1, y1 = tuple(map(int, dict_to_format["ENTRY"].split(",")))
             x2, y2 = tuple(map(int, dict_to_format["EXIT"].split(",")))
         except ValueError:
-            raise ValueError("Coordinates are incomplete")
+            raise ValueError(
+                "Coordinate values are incorrect, expecting (int, int)"
+            )
         formatted_dict["ENTRY"] = (x1, y1)
         formatted_dict["EXIT"] = (x2, y2)
         if dict_to_format["PERFECT"] == "True":
