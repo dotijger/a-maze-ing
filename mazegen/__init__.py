@@ -1,3 +1,3 @@
-from .mazegen import MazeGenerator, ConfigDict
+from .generator import MazeGenerator, ConfigDict
 
 __all__ = ["MazeGenerator", "ConfigDict"]
