@@ -2,7 +2,7 @@
 
 # a_maze_ing
 
-![Screenshot][visuals/files/maze_screenshot.png]
+![Screenshot](visuals/files/maze_screenshot.png)
 
 ## Description
 
