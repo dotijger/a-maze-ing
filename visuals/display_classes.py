@@ -20,7 +20,7 @@ class DisplayError(Exception):
         Exception (_type_)
     """
 
-    def __init__(self, msg):
+    def __init__(self, msg) -> None:
         """Shows errors related to displaying the maze.
 
         Args:
@@ -42,7 +42,7 @@ class MapError(DisplayError):
         DisplayError (Exception):
     """
 
-    def __init__(self, msg: str):
+    def __init__(self, msg: str) -> None:
         """Creates a map error
 
         Args:
@@ -58,7 +58,7 @@ class MlxError(DisplayError):
         DisplayError (Exception):
     """
 
-    def __init__(self, msg: str):
+    def __init__(self, msg: str) -> None:
         """Creates a Mlx error
 
         Args:
@@ -94,7 +94,7 @@ class TileInfo:
 class Window:
     """Contains imprtant information for displaying a window"""
 
-    def __init__(self, tile: TileInfo, mlx: Mlx, mlx_ptr: Any):
+    def __init__(self, tile: TileInfo, mlx: Mlx, mlx_ptr: Any) -> None:
         """Creates an instance of a window with important information to
         display it.
 

@@ -381,9 +381,7 @@ class MazeGenerator:
         for x, y in neighbors:
             neighbor = self._get_cell((node.x + x), (node.y + y))
             if neighbor is not None:
-                node_neighbors.append(
-                    self._get_cell((node.x + x), (node.y + y))
-                )
+                node_neighbors.append(neighbor)
         return node_neighbors
 
     def _remove_walls(self, current: "Cell", chosen: "Cell") -> None:
@@ -418,7 +416,7 @@ class MazeGenerator:
             current.walls = self._close_wall(2, current.walls)
             chosen.walls = self._close_wall(0, chosen.walls)
 
-    def _open_wall(self, dir: int, cell: hex) -> hex:
+    def _open_wall(self, dir: int, cell: int) -> int:
         """Returns the hexadecimal value after opening a wall,
         changing that bit from 1 -> 0, given a hexadecimal value,
         and the direction (bit 0-3) that needs to be opened"""
@@ -432,7 +430,7 @@ class MazeGenerator:
             return cell & ~0x8
         raise GenerationError("Invalid parameters", "open_wall")
 
-    def _close_wall(self, dir: int, cell: hex) -> hex:
+    def _close_wall(self, dir: int, cell: int) -> int:
         """Returns the hexadecimal value after closing a wall,
         changing that bit from 0 -> 1, given a hexadecimal value,
         and the direction (bit 0-3) that needs to be closed"""

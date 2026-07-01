@@ -15,7 +15,7 @@ class GenerationError(BaseException):
 
 class SolveError(BaseException):
     def __init__(
-        self, message="Unknown Solving Error", f: str | None = None
+        self, message: str = "Unknown Solving Error", f: str | None = None
     ) -> None:
         self.message = message
         self.function = f

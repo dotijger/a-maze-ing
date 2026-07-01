@@ -7,7 +7,7 @@ name = "mazegen"
 version = "1.0.0"
 description = "Reusable Maze Generator Module"
 requires-python = ">3.10"
-authors = [{ name = "lelourens" }, { name = "odschreu" }]
+authors = [{ name = "lelouren" }, { name = "odschreu" }]
 dependencies = [""]
 
 [tool.setuptools.packages.find]

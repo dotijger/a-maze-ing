@@ -2,7 +2,7 @@
 
 import sys
 from .parsing_errors import InputError, ConfigError
-from typing import Tuple
+from typing import Any
 from mazegen import ConfigDict
 
 
@@ -31,7 +31,7 @@ def user_input() -> bool:
     return True
 
 
-def convert_dict_values(dict_to_format: dict) -> ConfigDict:
+def convert_dict_values(dict_to_format: dict[str, str]) -> ConfigDict:
     """Converts the string values in the dictionary into the value type it
     needs to be in order to be used.
 
@@ -44,26 +44,35 @@ def convert_dict_values(dict_to_format: dict) -> ConfigDict:
     Returns:
         dict: The formatted dictionary with correctly typed values
     """
+    formatted_dict: ConfigDict = {
+        "WIDTH": 0,
+        "HEIGHT": 0,
+        "ENTRY": (0, 0),
+        "EXIT": (0, 0),
+        "OUTPUT_FILE": "output_file.txt",
+        "PERFECT": False,
+        "SEED": None,
+    }
+
     try:
-        dict_to_format["WIDTH"] = int(dict_to_format["WIDTH"])
-        dict_to_format["HEIGHT"] = int(dict_to_format["HEIGHT"])
-        dict_to_format["ENTRY"] = tuple(
-            map(int, dict_to_format["ENTRY"].split(","))
-        )
-        dict_to_format["EXIT"] = tuple(
-            map(int, dict_to_format["EXIT"].split(","))
-        )
+        formatted_dict["OUTPUT_FILE"] = dict_to_format["OUTPUT_FILE"]
+        formatted_dict["WIDTH"] = int(dict_to_format["WIDTH"])
+        formatted_dict["HEIGHT"] = int(dict_to_format["HEIGHT"])
+        x, y = tuple(map(int, dict_to_format["ENTRY"].split(",")))
+        formatted_dict["ENTRY"] = (x, y)
+        x, y = tuple(map(int, dict_to_format["EXIT"].split(",")))
+        formatted_dict["EXIT"] = (x, y)
         if dict_to_format["PERFECT"] == "True":
-            dict_to_format["PERFECT"] = True
+            formatted_dict["PERFECT"] = True
         else:
-            dict_to_format["PERFECT"] = False
+            formatted_dict["PERFECT"] = False
         if dict_to_format["SEED"]:
-            dict_to_format["SEED"] = int(dict_to_format["SEED"])
+            formatted_dict["SEED"] = int(dict_to_format["SEED"])
         else:
-            dict_to_format["SEED"] = None
+            formatted_dict["SEED"] = None
     except KeyError:
         raise KeyError("Could not find a config key in the dictionary")
-    return dict_to_format
+    return formatted_dict
 
 
 def config_file() -> ConfigDict:
@@ -75,7 +84,7 @@ def config_file() -> ConfigDict:
     Returns:
         dict: The correctly formatted dictionary
     """
-    config_info: dict = {}
+    config_info: dict[str, str] = {}
 
     with open(sys.argv[1], "r") as file:
         for line in file:
@@ -83,8 +92,7 @@ def config_file() -> ConfigDict:
                 continue
             key, value = line.split("=", 1)
             config_info[key.strip()] = value.strip()
-    convert_dict_values(config_info)
-    return config_info
+    return convert_dict_values(config_info)
 
 
 def parsed_input_dict() -> ConfigDict:
@@ -129,7 +137,7 @@ def check_parameters(config_dict: ConfigDict) -> None:
     width: int
     height: int
 
-    def get_and_check_tuple(key: str) -> Tuple:
+    def get_and_check_tuple(key: str) -> tuple[int, int]:
         """Gets the dictionary tuple value and checks the value is None
 
         Args:
@@ -144,7 +152,7 @@ def check_parameters(config_dict: ConfigDict) -> None:
         """
         result_x: int
         result_y: int
-        result: tuple | None
+        result: object
 
         result = config_dict.get(key)
         if result is None:
@@ -165,7 +173,7 @@ def check_parameters(config_dict: ConfigDict) -> None:
         Returns:
             int: The dictionary value for the given key
         """
-        result_int: int | None
+        result_int: object
 
         result_int = config_dict.get(key)
         if result_int is None:
