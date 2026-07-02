@@ -88,7 +88,8 @@ def convert_dict_values(dict_to_format: dict[str, str]) -> ConfigDict:
             formatted_dict["PERFECT"] = False
         else:
             raise ConfigError("PERFECT needs either 'True' or 'False'")
-        if dict_to_format["SEED"]:
+        try:
+            dict_to_format["SEED"]
             try:
                 seed = int(dict_to_format["SEED"])
             except ValueError:
@@ -96,8 +97,8 @@ def convert_dict_values(dict_to_format: dict[str, str]) -> ConfigDict:
                     "Invalid seed specified, only int values allowed"
                 )
             formatted_dict["SEED"] = seed
-        else:
-            formatted_dict["SEED"] = None
+        except KeyError:
+            return formatted_dict
     except KeyError:
         raise KeyError("Could not find a config key in the dictionary")
     return formatted_dict
@@ -118,6 +119,10 @@ def config_file() -> ConfigDict:
         for line in file:
             if not line or line.startswith("#"):
                 continue
+            if "=" not in line:
+                raise ConfigError(f"{line.strip()} is not a KEY=VALUE pair. "
+                                  "Please refer to the example config.txt in "
+                                  "the README.md")
             key, value = line.split("=", 1)
             config_info[key.strip()] = value.strip()
     return convert_dict_values(config_info)
