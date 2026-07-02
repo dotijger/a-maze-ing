@@ -10,11 +10,20 @@ a_maze_ing is a maze generator project for the 42 core curriculum. It is a pytho
 
 ## Goals of this project
 
-[ ] Create a maze generator from a config file  
-[ ] Generate a perfect maze  
-[ ] Output the maze as a hexadecimal representation  
-[ ] Create a visual representation of the maze and its shortest path solution  
-[ ] Ensure it is appropriately packaged for reusing later  
+**Main goals of the project** <br>
+[✓] Create a maze generator from a config file  <br>
+[✓] Generate a perfect maze  or imperfect maze <br>
+[✓] Output the maze as a hexadecimal representation  in a .txt file <br>
+[✓] Create a visual representation of the maze and its shortest path solution <br>
+[✓] Ensure it is appropriately packaged for reusing later <br>
+
+**Extras** <br>
+[✓] Visualisation with mlx <br>
+[✓] Can change the whole theme of the maze and not just the colour <br>
+[✓] Can regenerate the same maze with the click of a key<br>
+[✓] Shows and hides the solution path <br>
+[✓] Can regenerate different mazes with the click of a key <br>
+[✓] Separate window with clear instructions <br>
 
 # Instructions
 
@@ -43,6 +52,7 @@ a_maze_ing is a maze generator project for the 42 core curriculum. It is a pytho
 
 ## Structure and format of the config file
 
+**Example config structure**
 ```
 WIDTH=20
 HEIGHT=25
@@ -53,24 +63,61 @@ PERFECT=True
 #SEED=42
 ```
 
-## Maze generation Algorithm
+**Descriptions**
+| Key | Description |
+| ----------- | ----------- |
+| WIDTH | Width that the maze should be |
+| HEIGHT | Height that the maze should be |
+| ENTRY | The entry coordinates for the maze |
+| EXIT | The exit coordinates for the maze |
+| OUTPUT_FILE | The file to output the maze to |
+| PERFECT | A boolean indicating if it should be a perfect maze |
+| SEED | Specifies a seed if applicable |
 
+
+## Maze generation Algorithm
 ### Why we chose it
 
 ## Reusable code
 
 ## Team and project management
+**Odin**
+- Maze Generator
+- Maze Solver
+- Output file from the maze generator and solver
+- Packaging of the maze generator as per the subject requirements
+- Seeking and resolving edge cases
+- Connecting the maze generator to the visualisation
+- Error handling for the maze generator and parsing
+- Contributing to the README.md
 
-### Team members
-
-1. odschreu
-2. lelouren
+**Leandra**
+- Parsing
+- Mlx visualisation of the maze
+- Error handling for visualisation and parsing
+- Creating the Makefile and requirements.txt
+- Creating foundations for the README.md
 
 ### Project planning
+We met on a weekly basis to discuss what we have done and what we need to do that week. 
 
 ### What worked well
+- Meeting at least once a week
+- One Github repository where we are both collaborators
+- Splitting of the tasks according to generation or visualisation
+- A simple main file that delegates the different sections of the project. Each section then has its own folder with files and error handling
 
 ### What can be improved
+**Parsing**
+- Do the check parameters before returning the dict to the main <br>
+- Create a class instead of a dict because fetching information from a dict has a high risk of failing if there is a key mismatch
+
+**Maze generation** <br>
+
+**Visualisation**
+- Have one class with all the necessary information instead of a class that gets absorbed by another class, that gets absorbed again.
+- Reading from only the output file instead of the config file as well
+
 
 ### Tools
 
