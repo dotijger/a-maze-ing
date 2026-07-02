@@ -36,7 +36,7 @@ class MazeGenerator:
         self._structure: str = ""
         self._file_name: str = config["OUTPUT_FILE"]
         if self._in_42():
-            raise ValueError("Start and end must not be in 42 pattern.")
+            raise MazeError("Start and end must not be in 42 pattern.")
 
     def generate(self) -> None:
         """Public method called to generate the maze.
