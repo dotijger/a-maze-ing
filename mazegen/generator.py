@@ -130,7 +130,7 @@ class MazeGenerator:
         Imperfect maze is achieved by removing roughly 10 perfect of
         all internal walls after dfs maze generation"""
         internal_walls = self._count_walls()
-        amount_to_remove = int(0.1 * internal_walls)
+        amount_to_remove = int(0.2 * internal_walls)
         while amount_to_remove > 0:
             x = random.randint(0, self._width - 1)
             y = random.randint(0, self._height - 1)
@@ -215,6 +215,27 @@ class MazeGenerator:
                 return True
         return False
 
+    def _3x3_open(self, x: int, y: int) -> bool:
+        # check east wall is there (only necessary in cols 0 and 1)
+        for index_y in range(y, y + 3):
+            for index_x in range(x, x + 2):
+                cell = self._get_cell(index_x, index_y)
+                if cell is None:
+                    return False
+                if (cell.walls >> 1) & 1:
+                    return False
+
+        # check whether south wall is there (only necessary in rows 0 and 1)
+        for index_y in range(y, y + 2):
+            for index_x in range(x, x + 3):
+                cell = self._get_cell(index_x, index_y)
+                if cell is None:
+                    return False
+                if (cell.walls >> 2) & 1:
+                    return False
+
+        return True
+
     def _3x3(self, x: int, y: int, bit: int) -> bool:
         """Checks whether the removal of an internal wall creates
         a 3x3 open space. Returns False if it does not, returns True
@@ -226,14 +247,15 @@ class MazeGenerator:
             raise MazeError("Cell not defined")
         self._remove_walls(cell, neighbor)
         try:
-            if cell.walls != 0:
-                return False
-            neighbors = self._get_neighbors(cell)
-            for n in neighbors:
-                neighbit = self._get_bit(n.x - x, n.y - y)
-                if n.walls != (1 << neighbit):
-                    return False
-            return True
+            min_start_x = max(0, min(cell.x, neighbor.x) - 2)
+            max_start_x = min(max(cell.x, neighbor.x), self._width - 3)
+            min_start_y = max(0, min(cell.y, neighbor.y) - 2)
+            max_start_y = min(max(cell.y, neighbor.y), self._height - 3)
+            for start_y in range(min_start_y, max_start_y + 1):
+                for start_x in range(min_start_x, max_start_x + 1):
+                    if self._3x3_open(start_x, start_y):
+                        return True
+            return False
         finally:
             self._add_walls(cell, neighbor)
 
