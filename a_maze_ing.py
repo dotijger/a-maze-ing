@@ -7,7 +7,7 @@ try:
     from parsing.parsing_errors import InputError, ConfigError, FileError
     from visuals.display_maze import display_maze
     from mazegen import MazeGenerator, ConfigDict
-    from mazegen.error import GenerationError
+    from mazegen.error import MazeError
 except ModuleNotFoundError as e:
     print(f"{e}, please install this dependency before trying again.")
     sys.exit(1)
@@ -44,7 +44,7 @@ def main() -> None:
         generator.generate()
         generator.solve()
         generator.output()
-    except (ConfigError, GenerationError, ValueError) as msg:
+    except (ConfigError, MazeError, ValueError, FileError) as msg:
         print(msg)
         return
 

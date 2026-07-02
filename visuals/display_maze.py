@@ -7,7 +7,7 @@ from visuals.drawing import draw_maze, draw_solution
 from mlx import Mlx
 from typing import Any, NamedTuple
 from mazegen import MazeGenerator, ConfigDict
-from mazegen.error import GenerationError
+from mazegen.error import MazeError
 
 
 class HexMap(NamedTuple):
@@ -115,7 +115,7 @@ def on_key_press(key_pressed: int, mlx_data: HookData) -> None:
             generate_dfs.generate()
             generate_dfs.solve()
             generate_dfs.output()
-        except (ConfigError, GenerationError) as msg:
+        except (ConfigError, MazeError, ValueError, FileError) as msg:
             print(msg)
             return
         new_maze, new_entry, new_exit, new_path = read_hex_map(configs)

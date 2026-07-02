@@ -1,28 +1,14 @@
-class GenerationError(BaseException):
-    def __init__(
-        self, message: str = "Unknown Generation Error", f: str | None = None
-    ) -> None:
-        self.message = message
-        self.function = f
-        super().__init__(self.message)
+class MazeError(BaseException):
+    """Shows errors related to a maze generation issue
 
-    def __str__(self) -> str:
-        if self.function is not None:
-            return f"Generation Error! {self.message} \
-            in function {self.function}"
-        return f"Generation Error! {self.message}"
+    Args:
+        BaseException:
+    """
 
+    def __init__(self, msg: str) -> None:
+        """Creates a Mlx error
 
-class SolveError(BaseException):
-    def __init__(
-        self, message: str = "Unknown Solving Error", f: str | None = None
-    ) -> None:
-        self.message = message
-        self.function = f
-        super().__init__(self.message)
-
-    def __str__(self) -> str:
-        if self.function is not None:
-            return f"Solving Error! {self.message} \
-            in function {self.function}"
-        return f"Solving Error! {self.message}"
+        Args:
+            msg (str): Message to display if the error happens
+        """
+        super().__init__(f"Maze Error: {msg}")

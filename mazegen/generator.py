@@ -3,7 +3,7 @@
 from typing import List, TypedDict
 import random
 from .cell import Cell
-from .error import GenerationError, SolveError
+from .error import MazeError
 from parsing.parsing_errors import FileError
 
 
@@ -46,7 +46,7 @@ class MazeGenerator:
             random.seed(self._seed)
         try:
             self._42()
-        except GenerationError as e:
+        except MazeError as e:
             print(f"{e}: continue generating without 42 pattern.")
         self._dfs()
         if self._perfect is False:
@@ -69,7 +69,7 @@ class MazeGenerator:
         """Method to block off the 4 and 2 in the middle of the maze,
         if there is enough space given the weight/height parameters."""
         if self._width < 11 or self._height < 9:
-            raise GenerationError("Size of maze too small for 42 pattern")
+            raise MazeError("Size of maze too small for 42 pattern")
         mid_x = int(self._width / 2)
         mid_y = int(self._height / 2)
         offset_4 = -1
@@ -110,13 +110,13 @@ class MazeGenerator:
         check = [self._start, self._end]
         try:
             self._42()
-        except GenerationError:
+        except MazeError:
             return False
         for y in range(0, self._height):
             for x in range(0, self._width):
                 cell = self._get_cell(x, y)
                 if cell is None:
-                    raise GenerationError("Cells not defined")
+                    raise MazeError("Cells not defined")
                 if cell.four or cell.two:
                     if check[0][0] == cell.x and check[0][1] == cell.y:
                         return True
@@ -140,7 +140,7 @@ class MazeGenerator:
                 direction = self._get_direction(bit)
                 neighbor = self._get_cell(x + direction[0], y + direction[1])
                 if neighbor is None or cell is None:
-                    raise GenerationError("Cell not defined")
+                    raise MazeError("Cell not defined")
                 self._remove_walls(cell, neighbor)
                 amount_to_remove -= 1
 
@@ -150,7 +150,7 @@ class MazeGenerator:
         property in the objects of class Cell"""
         start = self._get_cell(self._start[0], self._start[1])
         if start is None:
-            raise GenerationError("Cell not defined")
+            raise MazeError("Cell not defined")
         stack = [start]
         start.visited = True
         while len(stack) != 0:
@@ -190,7 +190,7 @@ class MazeGenerator:
             for x in range(self._width):
                 cell = self._get_cell(x, y)
                 if cell is None:
-                    raise GenerationError("Cell not defined")
+                    raise MazeError("Cell not defined")
                 if x < self._width - 1:
                     if cell.walls >> 1 & 1:
                         count += 1
@@ -205,7 +205,7 @@ class MazeGenerator:
         False if removal is not allowed / would violate these constraints"""
         cell = self._get_cell(x, y)
         if cell is None:
-            raise GenerationError("Cell not defined")
+            raise MazeError("Cell not defined")
         direction = self._get_direction(bit)
         neighbor = self._get_cell(x + direction[0], y + direction[1])
         if neighbor is None:
@@ -225,7 +225,7 @@ class MazeGenerator:
         direction = self._get_direction(bit)
         neighbor = self._get_cell(x + direction[0], y + direction[1])
         if neighbor is None or cell is None:
-            raise GenerationError("Cell not defined")
+            raise MazeError("Cell not defined")
         self._remove_walls(cell, neighbor)
         try:
             if cell.walls != 0:
@@ -245,7 +245,7 @@ class MazeGenerator:
         and exports the path it found by updating the string self._path"""
         path = self._bfs()
         if path is None:
-            raise SolveError("Path not found.", "solve")
+            raise MazeError("Path not found.")
         self._cell_path_to_str(path)
 
     def _bfs(self) -> list["Cell"] | None:
@@ -255,7 +255,7 @@ class MazeGenerator:
         start = self._get_cell(self._start[0], self._start[1])
         end = self._get_cell(self._end[0], self._end[1])
         if start is None or end is None:
-            raise GenerationError("Cell not defined")
+            raise MazeError("Cell not defined")
         visited = []
         queue = []
         came_from = {}
@@ -352,7 +352,7 @@ class MazeGenerator:
                 output.write(f"{self._end[0]},{self._end[1]}\n")
                 output.write(self._path + "\n")
         except FileError as e:
-            print(f"Output file generation error: {e}")
+            raise FileError(f"Output file generation error: {e}")
 
     # public access
     @property
@@ -428,7 +428,7 @@ class MazeGenerator:
             return cell & ~0x4
         if dir == 3:  # west (left)
             return cell & ~0x8
-        raise GenerationError("Invalid parameters", "open_wall")
+        raise MazeError("Invalid parameters")
 
     def _close_wall(self, dir: int, cell: int) -> int:
         """Returns the hexadecimal value after closing a wall,
@@ -442,7 +442,7 @@ class MazeGenerator:
             return cell | (1 << 2)
         if dir == 3:  # west (left)
             return cell | (1 << 3)
-        raise GenerationError("Invalid parameters", "close_wall")
+        raise MazeError("Invalid parameters")
 
     # bit utilities
     @staticmethod
@@ -456,7 +456,7 @@ class MazeGenerator:
             return (0, 1)
         elif bit == 3:
             return (-1, 0)
-        raise ValueError("Invalid parameters")
+        raise MazeError("Invalid parameters")
 
     @staticmethod
     def _get_bit(x: int, y: int) -> int:
@@ -469,7 +469,7 @@ class MazeGenerator:
             return 2
         if x == -1:
             return 3
-        raise ValueError("Invalid parameters")
+        raise MazeError("Invalid parameters")
 
     @staticmethod
     def _coord_to_direction(x1: int, x2: int, y1: int, y2: int) -> str:
@@ -482,4 +482,4 @@ class MazeGenerator:
             return "N"
         if y1 < y2:
             return "S"
-        raise ValueError("Invalid parameters")
+        raise MazeError("Invalid parameters")
