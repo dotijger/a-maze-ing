@@ -1,6 +1,7 @@
 from enum import Enum
 from mlx import Mlx
 from typing import Any
+from mazegen.cell import Cell
 
 # Classes in file -------------------------------------------------------------
 # 1.  DisplayError
@@ -150,6 +151,8 @@ class Image:
         self.alt_end_ptr, self.alt_end_width, self.alt_end_height = alt_end
         steps = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/files/steps.png")
         self.steps_ptr, self.steps_width, self.steps_height = steps
+        white = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/files/white.png")
+        self.white_ptr, self.white_width, self.white_height = white
 
 
 class MazeInfo:
@@ -159,7 +162,8 @@ class MazeInfo:
 
     def __init__(
         self,
-        maze: list[list[int]],
+        maze_int: list[list[int]],
+        maze_cell: list[list[Cell]],
         tile: TileInfo,
         window: Window,
         image: Image,
@@ -182,7 +186,8 @@ class MazeInfo:
             exit_coord (tuple): Coordinate to exit the maze
             path (str): String containing the solution path
         """
-        self.maze = maze
+        self.maze_int = maze_int
+        self.maze_cell = maze_cell
         self.tile = tile
         self.window = window
         self.image = image
@@ -216,7 +221,7 @@ class DrawingData:
         self.cols = self.tile.cols
         self.mlx = mlx
         self.mlx_ptr = mlx_ptr
-        self.maze = drawing.maze
+        self.maze = drawing.maze_int
         self.alternate = drawing.alternate
         self.show_path = drawing.show_path
         self.path = drawing.path

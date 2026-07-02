@@ -50,7 +50,8 @@ def main() -> None:
 
     # Visuals *****************************************************************
     try:
-        display_maze(config_dict)
+        maze_cell = generator.grid
+        display_maze(config_dict, maze_cell)
     except Exception as msg:
         print(msg)
         return

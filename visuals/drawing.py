@@ -10,6 +10,7 @@ from visuals.drawing_utils import (
     draw_entry,
     draw_exit,
     draw_steps,
+    draw_42,
 )
 from mlx import Mlx
 from typing import Any
@@ -32,6 +33,7 @@ def draw_maze(drawing: MazeInfo, mlx: Mlx, mlx_ptr: Any) -> None:
     draw_bottom_border(data)
     draw_entry(data, drawing)
     draw_exit(data, drawing)
+    draw_42(data, drawing)
 
 
 def draw_solution(

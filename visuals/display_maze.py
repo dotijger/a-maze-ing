@@ -8,6 +8,7 @@ from mlx import Mlx
 from typing import Any, NamedTuple
 from mazegen import MazeGenerator, ConfigDict
 from mazegen.error import MazeError
+from mazegen.cell import Cell
 
 
 class HexMap(NamedTuple):
@@ -27,7 +28,7 @@ class HookData(NamedTuple):
     configs: ConfigDict
 
 
-def display_maze(configs: ConfigDict) -> None:
+def display_maze(configs: ConfigDict, maze_cell: list[list[Cell]]) -> None:
     """Extracts the map from the output file of the maze generator, does
     some checks and displays the window for the maze
 
@@ -40,16 +41,18 @@ def display_maze(configs: ConfigDict) -> None:
         DisplayError: The height does not match the config height
         DisplayError: Any error raised during the running window
     """
-    maze: list[list[int]] = []
+    maze_int: list[list[int]] = []
     path: str = ""
 
-    maze, entry_coord, exit_coord, path = read_hex_map(configs)
-    if len(maze[0]) != configs["WIDTH"]:
+    maze_int, entry_coord, exit_coord, path = read_hex_map(configs)
+    if len(maze_int[0]) != configs["WIDTH"]:
         raise MapError("Maze width does not equal config width")
-    if len(maze) != configs["HEIGHT"]:
+    if len(maze_int) != configs["HEIGHT"]:
         raise MapError("Maze height does not equal config height")
     is_perfect: bool = configs["PERFECT"]
-    mlx_display(maze, entry_coord, exit_coord, path, is_perfect, configs)
+    mlx_display(
+        maze_int, maze_cell, entry_coord, exit_coord, path, is_perfect, configs
+    )
 
 
 def read_hex_map(configs: ConfigDict) -> HexMap:
@@ -115,14 +118,16 @@ def on_key_press(key_pressed: int, mlx_data: HookData) -> None:
             generate_dfs.generate()
             generate_dfs.solve()
             generate_dfs.output()
+            maze_cell = generate_dfs.grid
         except (ConfigError, MazeError, ValueError, FileError) as msg:
             print(msg)
             return
         new_maze, new_entry, new_exit, new_path = read_hex_map(configs)
-        draw_data.maze = new_maze
+        draw_data.maze_int = new_maze
         draw_data.entry_coord = new_entry
         draw_data.exit_coord = new_exit
         draw_data.path = new_path
+        draw_data.maze_cell = maze_cell
         mlx.mlx_clear_window(mlx_ptr, window.ptr)
         draw_maze(draw_data, mlx, mlx_ptr)
         if draw_data.show_path is True:
@@ -156,7 +161,8 @@ def on_key_press(key_pressed: int, mlx_data: HookData) -> None:
 
 
 def mlx_display(
-    maze: list[list[int]],
+    maze_int: list[list[int]],
+    maze_cell: list[list[Cell]],
     entry_coord: tuple[int, int],
     exit_coord: tuple[int, int],
     path: str,
@@ -178,11 +184,19 @@ def mlx_display(
         raise MlxError(
             f"mlx could not initialise with error message {str(msg)}"
         )
-    tile: TileInfo = TileInfo(maze)
+    tile: TileInfo = TileInfo(maze_int)
     window: Window = Window(tile, mlx, mlx_ptr)
     image: Image = Image(mlx, mlx_ptr)
     draw_data: MazeInfo = MazeInfo(
-        maze, tile, window, image, entry_coord, exit_coord, path, is_perfect
+        maze_int,
+        maze_cell,
+        tile,
+        window,
+        image,
+        entry_coord,
+        exit_coord,
+        path,
+        is_perfect,
     )
 
     draw_data.path = path

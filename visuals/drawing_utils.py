@@ -205,6 +205,31 @@ def draw_exit(data: DrawingData, drawing: MazeInfo) -> None:
         )
 
 
+def draw_42(data: DrawingData, drawing: MazeInfo) -> None:
+    """
+    Draws the cells that are part of the 4 or 2
+    with a white tile. These cells do not get walls.
+    """
+    maze_cell = drawing.maze_cell
+
+    for row_index, row in enumerate(maze_cell):
+        row_y = row_index * data.passage
+
+        for col_index, cell in enumerate(row):
+            if not (cell.four or cell.two):
+                continue
+
+            col_x = col_index * data.passage
+
+            data.mlx.mlx_put_image_to_window(
+                data.mlx_ptr,
+                data.window_ptr,
+                data.image.white_ptr,
+                col_x + data.wall,
+                row_y + data.wall,
+            )
+
+
 def draw_steps(
     data: DrawingData,
     coordinates: tuple[int, int],
