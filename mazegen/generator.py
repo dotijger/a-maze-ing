@@ -59,9 +59,9 @@ class MazeGenerator:
         """Checks whether a specifc tuple of coordinates are lower than 0
         and within the width and height bounds, if not, returns True"""
         out_of_bounds = False
-        if xy[0] > w or xy[0] < 0:
+        if xy[0] >= w or xy[0] < 0:
             out_of_bounds = True
-        if xy[1] > h or xy[1] < 0:
+        if xy[1] >= h or xy[1] < 0:
             out_of_bounds = True
         return out_of_bounds
 
@@ -150,7 +150,7 @@ class MazeGenerator:
         property in the objects of class Cell"""
         start = self._get_cell(self._start[0], self._start[1])
         if start is None:
-            raise MazeError("Cell not defined")
+            raise MazeError("Start not defined")
         stack = [start]
         start.visited = True
         while len(stack) != 0:
@@ -166,16 +166,14 @@ class MazeGenerator:
                 stack.append(chosen)
 
     # generation helpers
-    def _is_unvisited(self, node: "Cell") -> bool:
+    def _is_unvisited(self, node: Cell) -> bool:
         """Returns True if node is unvisited (or allowed to be visited),
         returns False if node is visited (or not allowed to be visited)"""
         if node.visited is True or node.four is True or node.two is True:
             return False
         return True
 
-    def _get_unvisited_neighbors(
-        self, neighbors: list["Cell"]
-    ) -> list["Cell"]:
+    def _get_unvisited_neighbors(self, neighbors: list[Cell]) -> list["Cell"]:
         """Takes a list of cell objects and sees which ones are unvisited"""
         unvisited = []
         for neighbor in neighbors:
@@ -248,7 +246,7 @@ class MazeGenerator:
             raise MazeError("Path not found.")
         self._cell_path_to_str(path)
 
-    def _bfs(self) -> list["Cell"] | None:
+    def _bfs(self) -> list[Cell] | None:
         """Method that solves the generated maze grid by using basic
         breadth-first search. Returns a list of nodes (the shortest path).
         Start cell is at index -1, end cell is at 0, so from end to start"""

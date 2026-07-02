@@ -163,13 +163,13 @@ def check_parameters(config_dict: ConfigDict) -> None:
     width = config_dict["WIDTH"]
     height = config_dict["HEIGHT"]
 
-    if entry_x < 0 or entry_x > width:
+    if entry_x < 0 or entry_x >= width:
         raise ConfigError("Entry x-coordinate out of bounds")
-    if entry_y < 0 or entry_y > height:
+    if entry_y < 0 or entry_y >= height:
         raise ConfigError("Entry y-coordinate out of bounds")
-    if exit_x < 0 or exit_x > width:
+    if exit_x < 0 or exit_x >= width:
         raise ConfigError("Exit x-coordinate out of bounds")
-    if exit_y < 0 or exit_y > height:
+    if exit_y < 0 or exit_y >= height:
         raise ConfigError("Exit y-coordinate out of bounds")
     if (entry_x == exit_x) and (entry_y == exit_y):
         raise ConfigError("Entry and exit cannot be the same coordinates")
