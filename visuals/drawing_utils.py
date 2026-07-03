@@ -17,10 +17,26 @@ from time import sleep
 
 
 def has_north_wall(cell_value: int) -> bool:
+    """Check whether the north wall of a cell is present.
+
+    Args:
+        cell_value: Hexadecimal wall representation of the cell.
+
+    Returns:
+        True if the north wall is present, otherwise False.
+    """
     return bool(cell_value & Direction.NORTH.value)
 
 
 def has_west_wall(cell_value: int) -> bool:
+    """Check whether the west wall of a cell is present.
+
+    Args:
+        cell_value: Hexadecimal wall representation of the cell.
+
+    Returns:
+        True if the west wall is present, otherwise False.
+    """
     return bool(cell_value & Direction.WEST.value)
 
 
@@ -206,9 +222,12 @@ def draw_exit(data: DrawingData, drawing: MazeInfo) -> None:
 
 
 def draw_42(data: DrawingData, drawing: MazeInfo) -> None:
-    """
-    Draws the cells that are part of the 4 or 2
-    with a white tile. These cells do not get walls.
+    """ Draws the cells that are part of the 4 or 2 with a white tile.
+
+    Args:
+        data (DrawingData): Combines information from the MazeInfo instance
+        and extra information for drawing the maze.
+        drawing (MazeInfo): Instance with information for the maze
     """
     maze_cell = drawing.maze_cell
 
