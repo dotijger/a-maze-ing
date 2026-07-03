@@ -70,17 +70,18 @@ To generate different mazes, modify `config.txt` or provide a different configur
 
 # Resources
 
-## Using Git for team work
+## Website links
+### Using Git for team work
 
 1. <https://devot.team/blog/git-collaboration>
 2. <https://github.com/hei1sme/git-github-book>
 3. <https://dev.to/gladyspascual/a-beginner-s-guide-to-using-git-when-working-with-a-team-for-the-first-time-1hba>
 
-## Makefiles
+### Makefiles
 
 1. <https://earthly.dev/blog/python-makefile/>
 
-## Maze generation
+### Maze generation
 
 1. <https://www.youtube.com/watch?v=184Oair5iys>
 2. <https://en.wikipedia.org/wiki/Maze_generation_algorithm>
@@ -88,6 +89,13 @@ To generate different mazes, modify `config.txt` or provide a different configur
 4. <https://professor-l.github.io/mazes/>
 5. <https://dchakarov.com/blog/maze-algorithms/>
 6. <https://uca.hal.science/hal-03174952v1/document>
+
+## Other
+
+1. Peers at Codam to ask about their implementations / approaches
+2. YouTube tutorials on maze generation (other programming languages but similar algorithm implementations)
+3. For python itself: the Python modules from the Core Curriculum at Codam
+4. ClaudeAI as a tutor, asking to explain concepts and to be used as a guide of where to look (not used to write code)
 
 # Additional Information
 
