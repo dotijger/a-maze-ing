@@ -12,6 +12,14 @@ from mazegen.cell import Cell
 
 
 class HexMap(NamedTuple):
+    """Store the parsed maze data from a hexadecimal maze file.
+
+    Attributes:
+        int_map: Two-dimensional maze represented as hexadecimal wall values.
+        entry: Entry cell coordinates.
+        exit: Exit cell coordinates.
+        path: Shortest solution path as an NSEW string.
+    """
     int_map: list[list[int]]
     entry: tuple[int, int]
     exit: tuple[int, int]
@@ -19,6 +27,17 @@ class HexMap(NamedTuple):
 
 
 class HookData(NamedTuple):
+    """Store data required by MLX event hooks.
+
+    Attributes:
+        mlx: MLX interface instance.
+        mlx_ptr: Pointer to the MLX instance.
+        window: MLX window instance.
+        entry: Entry cell coordinates.
+        exit: Exit cell coordinates.
+        draw_data: Maze information required for rendering.
+        configs: Parsed maze configuration.
+    """
     mlx: Mlx
     mlx_ptr: Any
     window: Window
@@ -34,6 +53,8 @@ def display_maze(configs: ConfigDict, maze_cell: list[list[Cell]]) -> None:
 
     Args:
         configs (dict): Dictionary containing the config information
+        maze_cell (list[list[Cell]]):
+            grid of cell objects containing each individual cell's information
 
     Raises:
         DisplayError: Any file errors will be raised as a display error
@@ -57,6 +78,14 @@ def display_maze(configs: ConfigDict, maze_cell: list[list[Cell]]) -> None:
 
 def read_hex_map(configs: ConfigDict) -> HexMap:
     """Reads the output.txt for information to create the map and the path
+
+    Args:
+        configs (ConfigDict): configuration dictionary to initialize
+        a new maze generator if prompted in a_maze_ing program
+
+    Raises:
+        File Error: when reading the output_file from the MazeGenerator
+        results in an exception
 
     Returns:
         int_map: The map filled with ints indicating the wall structure of
@@ -96,7 +125,7 @@ def on_key_press(key_pressed: int, mlx_data: HookData) -> None:
     s   (115)   = Shows or hides the solution path
     c   (99)    = Changes the theme of the maze
     d   (100)   = Generates DPS maze (Default maze)
-    r   (114)   = Generates the same maze
+    r   (114)   = Redraws the same maze
 
     Args:
         key_pressed (int): The key that the user pressed
@@ -141,8 +170,6 @@ def on_key_press(key_pressed: int, mlx_data: HookData) -> None:
     elif key_pressed == 115:
         if draw_data.show_path is False:
             draw_data.show_path = True
-            # mlx.mlx_clear_window(mlx_ptr, window.ptr)
-            # draw_maze(draw_data, mlx, mlx_ptr)
             draw_solution(draw_data, mlx, mlx_ptr, entry, exit)
         else:
             draw_data.show_path = False
@@ -172,10 +199,18 @@ def mlx_display(
     """Runs the loop to display and interact the window containing the maze.
 
     Args:
-        maze (list[list[int]]): The maze with its open walls etc as an int
+        maze_int (list[list[int]]): The maze with its open walls etc as an int
+        maze_cell (list[list[Cell]]): The maze grid of cells
         entry_coord (_type_): The entry coordinates to the maze
         exit_coord (_type_): The exit coordinates to the maze
         path (str): The solution path
+        is_perfect (bool): boolean to say whether or not maze is perfect
+        configs (ConfigDict): configuration dictionary
+
+    Raises:
+        MlxError: if an mlx window cannot be initialized
+        MlxError: if there is an error with the key press hook
+        MlxError: if there is an error with the window exit hook
     """
     mlx: Mlx = Mlx()
     try:

@@ -31,6 +31,15 @@ def user_input() -> bool:
 
 
 def check_complete(raw: dict[str, str]) -> None:
+    """Validate that all required configuration keys and values exist.
+
+    Args:
+        raw: Dictionary containing the raw configuration values.
+
+    Raises:
+        ConfigError: If a required key is missing or a required value is
+            empty.
+    """
     required = ["WIDTH", "HEIGHT", "EXIT", "ENTRY", "OUTPUT_FILE", "PERFECT"]
 
     for key in required:
@@ -50,7 +59,11 @@ def convert_dict_values(dict_to_format: dict[str, str]) -> ConfigDict:
         dict_to_format (dict): Receives the dictionary to format
 
     Raises:
-        KeyError: If it cannot find the necessary key in the dictionary
+        ConfigError: If required configuration values are missing or if
+            the PERFECT value is invalid.
+        ValueError: If WIDTH, HEIGHT, ENTRY, EXIT, or SEED cannot be
+            converted to the required types.
+        KeyError: If an expected configuration key cannot be found.
 
     Returns:
         dict: The formatted dictionary with correctly typed values

@@ -9,23 +9,22 @@
 a_maze_ing is a maze generator project for the 42 core curriculum. It is a python written program that allows you to generate a maze and its shortest path solution. The maze is visualized with the MiniLibX library. The maze generator will allow you to set entry and exit points, as well as whether you would like a perfect or imperfect maze generated. You can also regenerate or reproduce the same maze by the use of a seed.
 
 ## Goals of this project
-
-**Main goals of the project** <br>
-[✓] Create a maze generator from a config file  <br>
-[✓] Generate a perfect maze  or imperfect maze <br>
-[✓] Output the maze as a hexadecimal representation  in a .txt file <br>
-[✓] Create a visual representation of the maze and its shortest path solution <br>
-[✓] Ensure it is appropriately packaged for reusing later <br>
+**Main goals** <br>
+[✔] Create a maze generator from a config file <br>
+[✔] Generate a perfect maze  <br>
+[✔] Output the maze as a hexadecimal representation  <br>
+[✔] Create a visual representation of the maze and its shortest path solution  <br>
+[✔] Ensure it is appropriately packaged for reusing later <br>
 
 **Extras** <br>
-[✓] Visualisation with mlx <br>
-[✓] Can change the whole theme of the maze and not just the colour <br>
-[✓] Can regenerate the same maze with the click of a key<br>
-[✓] Shows and hides the solution path <br>
-[✓] Can regenerate different mazes with the click of a key <br>
-[✓] Separate window with clear instructions <br>
+[✔] Visualise the maze with mlx <br>
+[✔] Change the whole theme of the maze and not just the colour <br>
+[✔] Regenerate the same maze with a single key press <br>
+[✔] Generate a new maze with a single key press <br>
+[✔] Created a separate, movable intrsuctions window for interacting with the maze generator <br>
 
 # Instructions
+
 
 # Resources
 
@@ -63,25 +62,30 @@ PERFECT=True
 #SEED=42
 ```
 
-**Descriptions**
-| Key | Description |
+| **Key** | **Description** |
 | ----------- | ----------- |
-| WIDTH | Width that the maze should be |
-| HEIGHT | Height that the maze should be |
+| WIDTH | The width that the maze needs to be |
+| HEIGHT | The height that the maze needs to be |
 | ENTRY | The entry coordinates for the maze |
 | EXIT | The exit coordinates for the maze |
-| OUTPUT_FILE | The file to output the maze to |
-| PERFECT | A boolean indicating if it should be a perfect maze |
-| SEED | Specifies a seed if applicable |
-
+| OUTPUT_FILE | The name of the file for the generated maze information |
+| PERFECT | A boolean for if the maze should be a perfect maze |
+| SEED | A seed number if you want to regenerate the maze with a specific seed |
 
 ## Maze generation Algorithm
-### Why we chose it
+**Depth-First Search (DFS)** <br>
+DFS is a graph/tree traversal algorithm. Starting from a node, it goes as deep as possible down one path before backtracking. 
+
+**Why we chose it** <br>
+- It is good for perfect mazes because of it's depth first approach
+- Every time it wants to move to another cell it randomises which unvisited cell it will visit next. This makes it reliably random
+- It is simple to understand and implement
+- It has fewer and longer dead ends making it more interesting to solve
 
 ## Reusable code
 
 ## Team and project management
-**Odin**
+**odschreu** <br>
 - Maze Generator
 - Maze Solver
 - Output file from the maze generator and solver
@@ -90,8 +94,9 @@ PERFECT=True
 - Connecting the maze generator to the visualisation
 - Error handling for the maze generator and parsing
 - Contributing to the README.md
+- Ensuring it is mypy and flake8 complient
 
-**Leandra**
+**lelouren** <br>
 - Parsing
 - Mlx visualisation of the maze
 - Error handling for visualisation and parsing
@@ -99,7 +104,7 @@ PERFECT=True
 - Creating foundations for the README.md
 
 ### Project planning
-We met on a weekly basis to discuss what we have done and what we need to do that week. 
+We met once per week to discuss our progress and what needed to be done for the coming week
 
 ### What worked well
 - Meeting at least once a week
@@ -108,16 +113,10 @@ We met on a weekly basis to discuss what we have done and what we need to do tha
 - A simple main file that delegates the different sections of the project. Each section then has its own folder with files and error handling
 
 ### What can be improved
-**Parsing**
-- Do the check parameters before returning the dict to the main <br>
+- Do the check parameters before returning the dict to the main
 - Create a class instead of a dict because fetching information from a dict has a high risk of failing if there is a key mismatch
-
-**Maze generation** <br>
-
-**Visualisation**
 - Have one class with all the necessary information instead of a class that gets absorbed by another class, that gets absorbed again.
 - Reading from only the output file instead of the config file as well
-
 
 ### Tools
 

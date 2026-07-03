@@ -15,6 +15,7 @@ all: run
 build:
 	python3 -m build
 	mv dist/mazegen-*.whl .
+	rm -r dist mazegen.egg-info
 
 install:
 	python3 -m venv $(VENV_DIR)
