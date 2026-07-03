@@ -164,9 +164,10 @@ def on_key_press(key_pressed: int, mlx_data: HookData) -> None:
     elif key_pressed == 65307:
         mlx.mlx_loop_exit(mlx_ptr)
     elif key_pressed == 114:
-        draw_data.show_path = False
         mlx.mlx_clear_window(mlx_ptr, window.ptr)
         draw_maze(draw_data, mlx, mlx_ptr)
+        if draw_data.show_path is True:
+            draw_solution(draw_data, mlx, mlx_ptr, entry, exit)
     elif key_pressed == 115:
         if draw_data.show_path is False:
             draw_data.show_path = True
