@@ -25,6 +25,48 @@ a_maze_ing is a maze generator project for the 42 core curriculum. It is a pytho
 
 # Instructions
 
+## Setup
+
+1. Install the project and its dependencies:
+
+   ```bash
+   make install
+   ```
+
+   This command:
+
+   * Creates the Python virtual environment (`maze_venv`)
+   * Upgrades `pip`
+   * Installs the required Python packages
+   * Extracts and builds the `mlx` wrapper
+   * Installs both the `mlx` and `mazegen` wheel packages into the virtual environment
+
+2. Activate the virtual environment:
+
+   ```bash
+   source maze_venv/bin/activate
+   ```
+
+3. Run the program:
+
+   ```bash
+   python3 a_maze_ing.py config.txt
+   ```
+
+To generate different mazes, modify `config.txt` or provide a different configuration file.
+
+## Makefile Commands
+
+| Command            | Description                                                                                                          |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| `make install`     | Sets up the virtual environment and installs all project dependencies.                                               |
+| `make build`       | Rebuilds the `mazegen` package and generates a new `.whl` file. Run this after making changes to the package source. |
+| `make run`         | Runs the program using the default configuration file.                                                               |
+| `make debug`       | Launches the program in the Python debugger (`pdb`).                                                                 |
+| `make lint`        | Runs `flake8` and `mypy` with the project's standard type-checking configuration.                                    |
+| `make lint-strict` | Runs `flake8` and `mypy` in strict mode.                                                                             |
+| `make clean`       | Removes Python cache directories and temporary files.                                                                |
+| `make bonfire`     | Removes the virtual environment along with all caches for a complete cleanup.                                        |
 
 # Resources
 
@@ -83,6 +125,48 @@ DFS is a graph/tree traversal algorithm. Starting from a node, it goes as deep a
 
 ## Reusable code
 
+## Using `mazegen`
+
+Once the `mazegen` package is installed (either in your Python environment or a virtual environment), import it into your project using either of the following:
+
+```python
+import mazegen
+```
+
+or
+
+```python
+from mazegen import MazeGenerator
+```
+
+Both options provide access to the `MazeGenerator` class. Using `import mazegen` also imports the `ConfigDict` type, which can be useful for type hinting when creating configuration dictionaries.
+
+### Creating a `MazeGenerator`
+
+Create a `MazeGenerator` by passing a configuration dictionary to the constructor:
+
+```python
+generator = MazeGenerator(config)
+```
+
+The configuration dictionary specifies maze dimensions, generation options, start/end positions, output settings, and other generation parameters.
+
+### Public Methods
+
+| Method       | Description                                                                                                                                                                                                       |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `generate()` | Generates a maze using a depth-first search algorithm. If enabled, it applies the optional 42 pattern, optionally converts the maze into an imperfect maze, and stores the final hexadecimal maze representation. |
+| `solve()`    | Solves the generated maze using breadth-first search and stores the solution path. Raises a `MazeError` if no valid path exists.                                                                                  |
+| `output()`   | Writes the generated maze, start and end coordinates, and solution path to the configured output file. If no filename is specified, the output is written to `output_file.txt`.                                   |
+
+### Properties
+
+| Property   | Description                                                                                                           |
+| ---------- | --------------------------------------------------------------------------------------------------------------------- |
+| `grid`     | Returns the maze as a two-dimensional list of `Cell` objects, allowing direct access to the generated maze structure. |
+| `solution` | Returns the solution path as a string after `solve()` has been called.                                                |
+
+
 ## Team and project management
 **odschreu** <br>
 - Maze Generator
@@ -136,3 +220,4 @@ Claude:
 - Breaking down project requirements into daily tasks
 - Explaining concepts such as ctypes and algorithms
 - Formatting
+- Giving structure to the README and helped polishing the README

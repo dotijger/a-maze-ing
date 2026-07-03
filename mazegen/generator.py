@@ -83,25 +83,6 @@ class MazeGenerator:
         self._structure = self._maze_to_str()
 
     # generation internals
-    @staticmethod
-    def _out_of_bounds(w: int, h: int, xy: tuple[int, int]) -> bool:
-        """Check whether coordinates lie outside the maze bounds.
-
-        Args:
-            w: Width of the maze.
-            h: Height of the maze.
-            xy: Coordinates to validate.
-
-        Returns:
-            True if the coordinates are outside the maze, otherwise False.
-        """
-        out_of_bounds = False
-        if xy[0] >= w or xy[0] < 0:
-            out_of_bounds = True
-        if xy[1] >= h or xy[1] < 0:
-            out_of_bounds = True
-        return out_of_bounds
-
     def _42(self) -> None:
         """Mark the cells that form the 42 pattern.
 
